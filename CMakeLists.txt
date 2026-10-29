@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.28)
-project(askmdb VERSION 1.0.0 LANGUAGES C CXX)
+project(askmdb VERSION 1.0.1 LANGUAGES C CXX)
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)

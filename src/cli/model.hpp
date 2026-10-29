@@ -45,7 +45,7 @@ struct ModelResolution {
 ModelResolution resolve_model(const std::string& explicit_path, const std::string& models_dir,
                               const ModelSpec& spec);
 
-// Megabytes (MiB) rounded up, for the dialog.
+// Decimal megabytes (10^6 bytes) rounded to the nearest, for the dialog (as the model cards).
 std::uint64_t size_mb(std::uint64_t bytes);
 
 }  // namespace askmdb::cli

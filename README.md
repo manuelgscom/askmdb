@@ -53,7 +53,7 @@ https://github.com/user-attachments/assets/21ef19b5-4a81-4f07-9409-41b8608ac391
 
 https://github.com/user-attachments/assets/ca19f68f-965e-4f6b-9887-f01f3e3a4266
 
-*Safety is decided by code, not by the model: a request to delete data gets an honest "I can't", and a write hidden inside a `$facet` is blocked by the verifier and never runs. Real, unedited recording.*
+*Safety is decided by code, not by the model: a request to delete data gets an honest "I can't", and a hand-written `$out` hidden inside a `$facet` is blocked by the verifier (shown with its standalone tool, `askmdb_verify`, built from the same source) and never runs. Real, unedited recording.*
 
 ## Install
 
@@ -66,12 +66,12 @@ The quickest way is the prebuilt binary from the [latest release](https://github
 - `curl` or `wget`, for the first model download.
 - MongoDB 5.0 or later (self-hosted or Atlas).
 - On Windows, use it through WSL 2.
-- **Optional, for the GPU:** a dedicated GPU with at least 4 GiB of free VRAM, its driver, and the Vulkan loader `libvulkan.so.1` (`libvulkan1` on Debian and Ubuntu, `vulkan-loader` on Fedora and Arch). Almost every desktop already has the loader. It may be missing on a server with only the NVIDIA driver; then `askmdb` uses the CPU and tells you what to install.
+- **Optional, for the GPU:** a dedicated GPU with at least 4 GiB of free VRAM, its driver, and the Vulkan loader `libvulkan.so.1` (`libvulkan1` on Debian and Ubuntu, `vulkan-loader` on Fedora, `vulkan-icd-loader` on Arch). Almost every desktop already has the loader. It may be missing on a server with only the NVIDIA driver; then `askmdb` uses the CPU and tells you what to install.
 
 ```bash
 grep -q avx2 /proc/cpuinfo && echo "AVX2: OK" || echo "AVX2: not supported"
 ldd --version | head -n 1     # the last number is the glibc version
-ldconfig -p | grep -q libvulkan.so.1 && echo "Vulkan loader: OK" || echo "Vulkan loader: missing (CPU only)"
+/sbin/ldconfig -p | grep -q libvulkan.so.1 && echo "Vulkan loader: OK" || echo "Vulkan loader: missing (CPU only)"
 ```
 
 The binary does not link the Vulkan library: it starts on any machine, and opens the loader only when it is going to use the GPU. TLS (OpenSSL) and the MongoDB driver are built in.
@@ -115,7 +115,7 @@ The first time, `askmdb` looks for a GPU and picks a model:
 first run ─► dedicated GPU, free VRAM?
                ├─ 8 GiB or more ─► choose: 1) askmdb-4b (Enter)  2) askmdb-9b  n) CPU
                ├─ 4 GiB or more ─► offer askmdb-4b                  [Y/n]
-               └─ less, or no GPU ─► askmdb-0.8b on the CPU
+               └─ less, or no GPU ─► offer askmdb-0.8b on the CPU   [Y/n]
 ```
 
 It always asks before downloading a model from Hugging Face (529 MB, 2.7 GB or 5.6 GB; see [The models](#the-models)). It checks its SHA-256 and stores it in `~/.local/share/askmdb/models/` (or `$XDG_DATA_HOME/askmdb/models/`). After that, the only network connection it makes is to your MongoDB.
@@ -192,7 +192,7 @@ mode = confirm
 lang = auto
 # connection string; with a password, the file must have mode 0600
 uri = mongodb://askmdb:secret@db.example.com:27017/shop?authSource=shop
-# collections given to the model (default: all, up to 50)
+# collections given to the model (default: all; needed, or -c, if there are more than 50)
 collections = orders, customers, products
 # row cap (1-1000) and server time limit in ms (100-300000)
 max_rows = 50
@@ -217,7 +217,7 @@ Command-line options take precedence over the configuration, and both over the f
               values; cached)        question)           or a refusal)   or blocked)                      row cap ─► table / JSON
 ```
 
-1. **Schema sampler.** For each collection (up to 50, or the ones you choose with `-c`) it reads 200 documents (the latest by `_id`) and derives field paths (`customer.city`, `items[].sku`), their types and, for short text fields with few distinct values, the most frequent values. Values that look like an email address or a phone number are never listed. The result is a compact block, trimmed to fit the model's budget, cached in `~/.cache/askmdb/` and refreshed with `--refresh` or after 7 days.
+1. **Schema sampler.** For each collection (all of them, or the ones you choose with `-c`; with more than 50, `askmdb` asks you to choose) it reads 200 documents (the latest by `_id`) and derives field paths (`customer.city`, `items[].sku`), their types and, for short text fields with few distinct values, the most frequent values. Values that look like an email address or a phone number are never listed. The result is a compact block, trimmed to fit the model's budget, cached in `~/.cache/askmdb/` and refreshed with `--refresh` or after 7 days.
 2. **Inference engine.** llama.cpp is linked into the binary through `llama.h`, with no server, daemon or port. It runs on the CPU or, through Vulkan, on the GPU. It decodes greedily, caps the output and stops as soon as the JSON object is closed. The state of the instructions and the schema is saved on disk, so only the first question against a database pays for reading the schema.
 3. **Verifier.** The pipeline is parsed with libbson into exactly the BSON that would be sent to the server, and a table of C++ rules walks it, including the sub-pipelines of `$facet`, `$lookup` and `$unionWith`. The highest level wins. Duplicate keys, unknown operators and anything it does not understand are blocked. This is the most critical piece of the project and the one with the most tests.
 4. **Executor.** `aggregate` with `maxTimeMS`, `allowDiskUse: false` and a row cap. No other MongoDB operation appears in the code.
@@ -297,7 +297,7 @@ askmdb --version
 
 The binary is optimised for the CPU of the machine where you build it (`-DASKMDB_NATIVE=OFF` turns that off).
 
-To include the GPU, add `-DASKMDB_VULKAN=ON` to the first command. It needs the Vulkan headers, SPIRV-Headers and the `glslc` shader compiler, from the [Vulkan SDK](https://vulkan.lunarg.com/sdk/home) or your distribution (on Debian and Ubuntu: `sudo apt install libvulkan-dev spirv-headers glslc`). The result still starts without a Vulkan loader, like the release binary.
+To include the GPU, add `-DASKMDB_VULKAN=ON` to the first command. It needs the Vulkan headers, SPIRV-Headers and the `glslc` shader compiler, from the [Vulkan SDK](https://vulkan.lunarg.com/sdk/home) or your distribution (Debian and Ubuntu: `sudo apt install libvulkan-dev spirv-headers glslc`; Fedora: `sudo dnf install vulkan-headers spirv-headers-devel glslc`; Arch: `sudo pacman -S vulkan-headers spirv-headers shaderc`). The result still starts without a Vulkan loader, like the release binary.
 
 From here on, everything works as in [Install](#install): if `askmdb` is not found, see [step 3](#3-check-that-your-shell-finds-it); the first run downloads the model.
 
@@ -317,13 +317,22 @@ The development build keeps the test hooks that the tests need, so do not use it
 
   ```bash
   # mongo: a mongod (5.0 or later) with the test databases
-  docker run -d --name askmdb-mongo -p 27018:27017 mongo:8.0
+  # (GLIBC_TUNABLES: mongod 8.0 does not start on Linux 6.19 or later without it)
+  docker run -d --name askmdb-mongo -p 27018:27017 -e GLIBC_TUNABLES=glibc.pthread.rseq=1 mongo:8.0
   docker cp tests/mongo/humo.js askmdb-mongo:/humo.js
   docker exec askmdb-mongo mongosh --quiet /humo.js
   ASKMDB_E2E_URI=mongodb://127.0.0.1:27018/humo ctest --test-dir build-dev -L mongo
 
-  # tls: a mongod with TLS and the test CA from tests/mongo/gen-tls.sh
-  ASKMDB_E2E_TLS_URI='mongodb://…/humo?tls=true&tlsCAFile=…/tests/mongo/tls/ca.pem' ctest --test-dir build-dev -L tls
+  # tls: a mongod with TLS, a throwaway test CA and a read-only user
+  tests/mongo/gen-tls.sh
+  docker run -d --name askmdb-mongo-tls -p 27019:27017 -e GLIBC_TUNABLES=glibc.pthread.rseq=1 \
+    -e MONGO_INITDB_ROOT_USERNAME=root -e MONGO_INITDB_ROOT_PASSWORD=root-test \
+    -v "$PWD/tests/mongo:/seed:ro" -v "$PWD/tests/mongo/tls:/tls:ro" \
+    -v "$PWD/tests/mongo/tls-init.js:/docker-entrypoint-initdb.d/10-humo.js:ro" \
+    mongo:8.0 --tlsMode requireTLS --tlsCertificateKeyFile /tls/server.pem \
+    --tlsCAFile /tls/ca.pem --tlsAllowConnectionsWithoutCertificates
+  ASKMDB_E2E_TLS_URI="mongodb://lector:lector-juguete@127.0.0.1:27019/humo?tls=true&tlsCAFile=$PWD/tests/mongo/tls/ca.pem" \
+    ctest --test-dir build-dev -L tls
 
   # model: a real GGUF
   ASKMDB_TEST_MODEL=/path/to/askmdb-0.8b-1.0.0-Q4_K_M.gguf ctest --test-dir build-dev -L model

@@ -63,8 +63,9 @@ ModelResolution resolve_model(const std::string& explicit_path, const std::strin
 }
 
 std::uint64_t size_mb(std::uint64_t bytes) {
-    constexpr std::uint64_t kMiB = 1024 * 1024;
-    return (bytes + kMiB - 1) / kMiB;
+    constexpr std::uint64_t kMB = 1000 * 1000;
+    const std::uint64_t mb = (bytes + kMB / 2) / kMB;
+    return mb == 0 && bytes > 0 ? 1 : mb;  // a non-empty file never shows as 0 MB
 }
 
 }  // namespace askmdb::cli

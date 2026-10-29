@@ -1005,7 +1005,7 @@ https://www.gnu.org/software/libc/
 glibc is licensed under the GNU Lesser General Public License, version 2.1 or
 later. askmdb links to it dynamically and does not distribute it: the binary
 uses the copy of glibc installed on the user's system (the release is built
-against glibc 2.31, so it runs on that version or newer). The small startup
+against glibc 2.31 and needs glibc 2.29 or newer). The small startup
 objects linked into every program (Scrt1.o, crti.o, crtn.o, libc_nonshared.a)
 are covered by the LGPL's special exception for them, which allows linking
 them into any program without restriction.

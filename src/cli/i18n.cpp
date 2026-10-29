@@ -23,7 +23,7 @@ constexpr Entry kTable[] = {
      "Opciones:\n"
      "  --uri URI            URI de MongoDB (si no: ASKMDB_URI o «uri» de la configuración)\n"
      "  --db BASE            base de datos (si no: la de la URI)\n"
-     "  -c, --collections a,b  colecciones que se dan al modelo (si no: todas, hasta 50)\n"
+     "  -c, --collections a,b  colecciones que se dan al modelo (si no: todas; obligatorio con más de 50)\n"
      "  --refresh            vuelve a muestrear el esquema aunque la caché esté al día\n"
      "  --print-schema       escribe el bloque de esquema y termina (sin pregunta)\n"
      "  --print-prompt       escribe el prompt exacto que vería el modelo y termina\n"
@@ -55,7 +55,7 @@ constexpr Entry kTable[] = {
      "Options:\n"
      "  --uri URI            MongoDB URI (otherwise: ASKMDB_URI or \"uri\" in the config)\n"
      "  --db DB              database (otherwise: the one in the URI)\n"
-     "  -c, --collections a,b  collections given to the model (otherwise: all, up to 50)\n"
+     "  -c, --collections a,b  collections given to the model (otherwise: all; required above 50)\n"
      "  --refresh            sample the schema again even if the cache is fresh\n"
      "  --print-schema       write the schema block and exit (no question)\n"
      "  --print-prompt       write the exact prompt the model would see and exit\n"
@@ -168,9 +168,9 @@ constexpr Entry kTable[] = {
     {Msg::HwVulkanNo, "  Vulkan: no\n", "  Vulkan: no\n"},
     {Msg::HwVulkanMissing,
      "  Vulkan: no se encuentra libvulkan.so.1. Para usar la GPU, instala el cargador de Vulkan\n"
-     "  (paquete libvulkan1 en Debian/Ubuntu, vulkan-loader en Fedora/Arch) y ejecuta «askmdb --detect».\n",
+     "  (paquete libvulkan1 en Debian/Ubuntu, vulkan-loader en Fedora, vulkan-icd-loader en Arch) y ejecuta «askmdb --detect».\n",
      "  Vulkan: libvulkan.so.1 not found. To use the GPU, install the Vulkan loader\n"
-     "  (package libvulkan1 on Debian/Ubuntu, vulkan-loader on Fedora/Arch) and run \"askmdb --detect\".\n"},
+     "  (package libvulkan1 on Debian/Ubuntu, vulkan-loader on Fedora, vulkan-icd-loader on Arch) and run \"askmdb --detect\".\n"},
     {Msg::HwGpu, "  GPU {}: {} ({}), {} MiB libres de {} MiB\n", "  GPU {}: {} ({}), {} MiB free of {} MiB\n"},
     {Msg::HwNoGpu, "  GPU: ninguna\n", "  GPU: none\n"},
     {Msg::HwRam, "  RAM: {} MiB disponibles de {} MiB; {} núcleos\n", "  RAM: {} MiB available of {} MiB; {} cores\n"},

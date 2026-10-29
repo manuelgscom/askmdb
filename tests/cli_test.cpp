@@ -847,7 +847,9 @@ TEST_CASE("resolución del modelo") {
     CHECK(resolve_model("", "", spec).status == S::NoDir);
     fs::remove_all(dir);
     CHECK(size_mb(3) == 1);
-    CHECK(size_mb(529297728ULL) == 505);
+    CHECK(size_mb(529298016ULL) == 529);   // decimal MB, as the model cards say
+    CHECK(size_mb(2708805088ULL) == 2709);
+    CHECK(size_mb(5629109824ULL) == 5629);
 }
 
 TEST_CASE("run: ayuda, versión y uso") {
