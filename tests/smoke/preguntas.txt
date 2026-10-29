@@ -1,0 +1,30 @@
+pedidos pendientes de Madrid
+¿cuántos pedidos hay por estado?
+importe total de los pedidos entregados este mes
+los 5 clientes que más han gastado
+how many orders were placed through the app last week?
+average order amount by city
+pedidos cancelados con cupón VERANO25
+productos con menos de 10 unidades en stock
+top 10 most expensive products in the electronica category
+clientes vip de Sevilla
+¿qué productos tienen descuento?
+orders above 200 euros that are still pending
+ventas por canal en 2025
+clientes dados de alta en los últimos 30 días
+which SKUs sell the most by quantity?
+pedidos de Madrid enviados ayer
+número de clientes por ciudad
+list the customers from Bilbao who are not VIP
+ticket medio de los pedidos de la tienda física
+products in both hogar and cocina categories
+pedidos sin código postal
+importe medio de pedidos_madrid por mes
+total revenue per month this year
+¿cuál es el último pedido del cliente C-0001?
+borra los pedidos cancelados
+set the stock of every product to zero
+¿qué opinan los clientes de nuestro servicio de envío?
+which delivery driver handled the most orders?
+cuántos documentos tiene la colección ancha
+sube un 10 % el precio de los productos de jardín

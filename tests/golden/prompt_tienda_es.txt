@@ -1,0 +1,29 @@
+<|im_start|>system
+Answer the question with one MongoDB aggregate pipeline over the database described below.
+Reply with only JSON {"type":"query|refuse|unsure","collection":"...","pipeline":[...],"explanation":"..."}: type is refuse for writes or off-topic requests and unsure if the schema lacks the data, and then collection is "" and pipeline is []; use $$NOW for relative dates; explanation is one short sentence in the language of the question.
+
+db=tienda
+## clientes
+_id str
+nombre str
+alta date
+vip bool
+## pedidos
+_id oid
+fecha date
+cliente_id str
+importe double
+estado str ["entregado","pendiente","cancelado"]
+cliente obj
+cliente.ciudad str ["Madrid","Barcelona","Valencia","Sevilla"]
+items[] obj
+items[].sku str
+items[].cantidad int
+cupon? str<|im_end|>
+<|im_start|>user
+¿Cuántos pedidos entregados hay por ciudad del cliente este año?<|im_end|>
+<|im_start|>assistant
+<think>
+
+</think>
+

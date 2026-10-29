@@ -1,0 +1,37 @@
+<|im_start|>system
+Answer the question with one MongoDB aggregate pipeline over the database described below.
+Reply with only JSON {"type":"query|refuse|unsure","collection":"...","pipeline":[...],"explanation":"..."}: type is refuse for writes or off-topic requests and unsure if the schema lacks the data, and then collection is "" and pipeline is []; use $$NOW for relative dates; explanation is one short sentence in the language of the question.
+
+db=librería
+## autores
+_id oid
+nombre str
+apellido_paterno str ["García","Muñoz","Peña","Ibáñez","Núñez","Señorán"]
+país str ["España","México","Perú","Colombia"]
+año_nacimiento int
+apodo "corto"? str
+biografía obj
+biografía.lugar_de_nacimiento obj
+biografía.lugar_de_nacimiento.ciudad str
+biografía.lugar_de_nacimiento.región? str ["Castilla y León","Andalucía","Cataluña"]
+## libros
+_id oid
+título str
+autor_id oid
+año_publicación int
+géneros[] str ["poesía","novela","ensayo","ciencia ficción","teatro"]
+idioma str ["español","català","euskara","galego","português"]
+precio_€ decimal
+cita_destacada? str ["«En un lugar de la Mancha»","\"Ser o no ser\"","l'été indien"]
+emoji str ["📚","✨","🐉","☕"]
+reseñas[] obj
+reseñas[].puntuación int
+reseñas[].reseñador str
+reseñas[].fecha date<|im_end|>
+<|im_start|>user
+¿Qué autores con «ñ» en el apellido tienen libros de género "poesía"? 📚<|im_end|>
+<|im_start|>assistant
+<think>
+
+</think>
+

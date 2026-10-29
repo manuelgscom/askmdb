@@ -1,0 +1,41 @@
+<|im_start|>system
+Answer the question with one MongoDB aggregate pipeline over the database described below.
+Reply with only JSON {"type":"query|refuse|unsure","collection":"...","pipeline":[...],"explanation":"..."}: type is refuse for writes or off-topic requests and unsure if the schema lacks the data, and then collection is "" and pipeline is []; use $$NOW for relative dates; explanation is one short sentence in the language of the question.
+
+db=crmApp
+## Accounts
+_id oid
+accountName str
+created_at date
+owner obj
+owner.userId oid
+owner.nombre_completo str
+plan str ["free","pro","enterprise"]
+billing_address obj
+billing_address.countryCode str ["ES","US","MX","GB"]
+## contactos
+_id oid
+nombre str
+lastName str
+email_principal str
+empresaId oid
+etiquetas[] str ["lead","cliente","partner","churned"]
+ultimaInteraccion? date
+## deals
+_id oid
+dealName str
+accountId oid
+importe_total decimal
+stage str ["prospecting","negociacion","closed_won","closed_lost"]
+closeDate? date|null
+lineItems[] obj
+lineItems[].productCode str
+lineItems[].cantidad int
+lineItems[].unitPrice decimal<|im_end|>
+<|im_start|>user
+total importe_total of closed_won deals per plan de la cuenta this year<|im_end|>
+<|im_start|>assistant
+<think>
+
+</think>
+

@@ -1,0 +1,17 @@
+db=tienda
+## clientes
+_id str
+nombre str
+alta date
+vip bool
+## pedidos
+_id oid
+fecha date
+cliente_id str
+importe double
+estado str ["entregado","pendiente","cancelado"]
+cliente.ciudad str ["Madrid","Barcelona","Valencia","Sevilla"]
+items[] obj
+items[].sku str
+items[].cantidad int
+cupon? str

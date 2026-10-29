@@ -1,0 +1,89 @@
+db=humo
+## ancha
+_id oid
+n1 obj
+n1.n2 obj
+n1.n2.n3 obj
+n1.n2.n3.n4 obj
+f01 int
+f02 str ["valor-ancho-02-01","valor-ancho-02-08","valor-ancho-02-00","valor-ancho-02-02","valor-ancho-02-05","valor-ancho-02-06","valor-ancho-02-07","valor-ancho-02-04","valor-ancho-02-03","valor-ancho-02-09"]
+f03 double
+f04 int
+f05 str
+f06 double
+f07 int
+f08 str
+f09 double
+f10 int
+f11 str ["valor-ancho-11-03","valor-ancho-11-06","valor-ancho-11-09","valor-ancho-11-00","valor-ancho-11-08","valor-ancho-11-01","valor-ancho-11-02","valor-ancho-11-04","valor-ancho-11-05","valor-ancho-11-07"]
+f12 double
+f13 int
+f14 str
+f15 double
+f16 int
+f17 str
+f18 double
+f19 int
+f20 str ["valor-ancho-20-00","valor-ancho-20-01","valor-ancho-20-02","valor-ancho-20-04","valor-ancho-20-08","valor-ancho-20-09","valor-ancho-20-03","valor-ancho-20-05","valor-ancho-20-06","valor-ancho-20-07"]
+f21 double
+f22 int
+f23 str ["valor-ancho-23-07","valor-ancho-23-08","valor-ancho-23-01","valor-ancho-23-03","valor-ancho-23-09","valor-ancho-23-06","valor-ancho-23-00","valor-ancho-23-02","valor-ancho-23-04"]
+f24 double
+f25 int
+f26 str ["valor-ancho-26-01","valor-ancho-26-09","valor-ancho-26-02","valor-ancho-26-00","valor-ancho-26-05","valor-ancho-26-06","valor-ancho-26-03","valor-ancho-26-08","valor-ancho-26-04","valor-ancho-26-07"]
+f27 double
+f28 int
+f29 str
+f30 double
+f31 int
+f32 str
+f33 double
+f34 int
+f35 str ["valor-ancho-35-05","valor-ancho-35-00","valor-ancho-35-09","valor-ancho-35-04","valor-ancho-35-06","valor-ancho-35-07","valor-ancho-35-08","valor-ancho-35-01","valor-ancho-35-02","valor-ancho-35-03"]
+## clientes
+_id str
+nombre str
+email str
+telefono str
+ciudad str ["Bilbao","Sevilla","Madrid","Barcelona","Valencia"]
+alta date
+vip bool
+## pedidos
+_id oid
+fecha date
+cliente_id str
+cliente obj
+cliente.nombre str
+cliente.ciudad str ["Bilbao","Sevilla","Barcelona","Madrid","Valencia"]
+importe double
+estado str ["entregado","pendiente","enviado","cancelado"]
+canal str ["web","tienda","app"]
+items[] obj
+items[].sku str
+items[].cantidad int
+items[].precio double
+codigo_postal? int|str
+cupon? str ["VERANO25","FIDELIDAD5","BLACKFRIDAY","BIENVENIDA10"]
+## pedidos_madrid
+_id oid
+fecha date
+cliente_id str
+cliente obj
+cliente.nombre str
+cliente.ciudad str ["Madrid"]
+importe double
+estado str ["entregado","enviado","pendiente","cancelado"]
+canal str ["web","tienda","app"]
+items[] obj
+items[].sku str
+items[].cantidad int
+items[].precio double
+codigo_postal? int|str
+cupon? str ["FIDELIDAD5","BIENVENIDA10","BLACKFRIDAY","VERANO25"]
+## productos
+_id str
+nombre str
+precio decimal
+categorias[] str ["deporte","oficina","cocina","textil","regalo","jardin","hogar","electronica"]
+stock int
+descuento double|null

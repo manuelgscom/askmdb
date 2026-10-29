@@ -1,0 +1,9 @@
+[submodule "third_party/llama.cpp"]
+	path = third_party/llama.cpp
+	url = https://github.com/ggml-org/llama.cpp
+[submodule "third_party/mongo-c-driver"]
+	path = third_party/mongo-c-driver
+	url = https://github.com/mongodb/mongo-c-driver
+[submodule "third_party/doctest"]
+	path = third_party/doctest
+	url = https://github.com/doctest/doctest

@@ -1,0 +1,26 @@
+{
+  "humo": {
+    "bytes": 2684,
+    "tokens": 1146
+  },
+  "mezcla": {
+    "bytes": 637,
+    "tokens": 171
+  },
+  "presupuesto": {
+    "bytes": 4457,
+    "tokens": 1261
+  },
+  "tienda_en": {
+    "bytes": 304,
+    "tokens": 88
+  },
+  "tienda_es": {
+    "bytes": 304,
+    "tokens": 88
+  },
+  "unicode": {
+    "bytes": 838,
+    "tokens": 273
+  }
+}

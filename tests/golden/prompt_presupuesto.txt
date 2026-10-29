@@ -1,0 +1,210 @@
+<|im_start|>system
+Answer the question with one MongoDB aggregate pipeline over the database described below.
+Reply with only JSON {"type":"query|refuse|unsure","collection":"...","pipeline":[...],"explanation":"..."}: type is refuse for writes or off-topic requests and unsure if the schema lacks the data, and then collection is "" and pipeline is []; use $$NOW for relative dates; explanation is one short sentence in the language of the question.
+
+db=marketplace
+## almacenes
+_id str
+nombre str
+ciudad str ["Madrid","Zaragoza","Valencia","Sevilla","Bilbao","A Coruña"]
+capacidad_m2 int
+activo bool
+direccion obj
+direccion.calle str
+direccion.cp str
+direccion.geo obj
+direccion.geo.lat double
+direccion.geo.lng double
+responsable obj
+responsable.nombre str
+responsable.turno str ["mañana","tarde","noche"]
+## clientes
+_id oid
+nombre str
+apellidos str
+email str
+telefono? str
+fecha_alta date
+segmento str ["particular","pyme","gran_cuenta","autonomo"]
+idioma str ["es","en","ca","eu","gl","pt"]
+vip bool
+puntos int
+direcciones[] obj
+direcciones[].tipo str ["envio","facturacion"]
+direcciones[].ciudad str
+direcciones[].provincia str ["Madrid","Barcelona","Valencia","Sevilla","Málaga","Vizcaya","Zaragoza","Alicante"]
+direcciones[].pais str ["ES","PT","FR","AD"]
+direcciones[].cp str
+preferencias obj
+preferencias.newsletter bool
+preferencias.canal_contacto str ["email","sms","telefono","ninguno"]
+preferencias.categorias_favoritas[] str ["electronica","hogar","moda","deporte","libros","juguetes"]
+ultimo_pedido? date
+baja? date
+## customer_support_tickets
+_id oid
+ticketNumber str
+createdAt date
+closedAt? date|null
+status str ["open","pending","solved","closed"]
+priority str ["low","normal","high","urgent"]
+channel str ["email","chat","phone","web"]
+customerId oid
+orderId? oid
+assignee obj
+assignee.name str
+assignee.team str ["billing","logistics","returns","tech"]
+tags[] str ["refund","late_delivery","damaged","wrong_item","invoice","account"]
+messages[] obj
+messages[].author str ["customer","agent","bot"]
+messages[].sentAt date
+messages[].body str
+satisfaction? obj
+satisfaction.score int
+satisfaction.comment? str
+## devoluciones
+_id oid
+pedido_id oid
+cliente_id oid
+fecha_solicitud date
+fecha_resolucion? date
+estado str ["solicitada","aprobada","rechazada","reembolsada","en_transito"]
+motivo str ["defectuoso","talla","no_deseado","llego_tarde","error_envio","otro"]
+importe_reembolso decimal
+lineas[] obj
+lineas[].sku str
+lineas[].unidades int
+lineas[].estado_producto str ["nuevo","abierto","dañado"]
+recogida obj
+recogida.transportista str ["SEUR","MRW","Correos","GLS"]
+recogida.fecha? date
+## envios
+_id oid
+pedido_id oid
+transportista str ["SEUR","MRW","Correos Express","GLS","DHL","UPS"]
+servicio str ["estandar","urgente","24h","punto_recogida"]
+estado str
+fecha_salida date
+fecha_entrega? date|null
+peso_kg double
+bultos int
+coste_envio decimal
+destino obj
+destino.direccion obj
+destino.direccion.ciudad str
+destino.direccion.provincia str
+destino.direccion.cp str
+destino.direccion.coordenadas obj
+destino.direccion.coordenadas.lat double
+destino.direccion.coordenadas.lng double
+seguimiento[] obj
+seguimiento[].fecha date
+seguimiento[].evento str
+seguimiento[].centro str
+## invoices
+_id oid
+invoice_number str
+issued_at date
+due_date date
+paid_at? date|null
+status str
+currency str
+subtotal decimal
+tax_total decimal
+total decimal
+customer obj
+customer.tax_id str
+customer.company_name? str
+customer.country str
+lines[] obj
+lines[].description str
+lines[].qty int
+lines[].unit_price decimal
+lines[].vat_rate double
+payment obj
+payment.method str
+payment.gateway? str
+## pedidos
+_id oid
+numero str
+fecha date
+cliente_id oid
+estado str
+canal str
+total decimal
+gastos_envio decimal
+descuento? decimal
+cupon? str
+moneda str
+items[] obj
+items[].producto_id oid
+items[].sku str
+items[].nombre str
+items[].cantidad int
+items[].precio_unitario decimal
+items[].categoria str
+envio obj
+envio.metodo str
+envio.direccion obj
+envio.direccion.ciudad str
+envio.direccion.provincia str
+envio.direccion.cp str
+pago obj
+pago.metodo str
+pago.estado str
+pago.fecha? date
+notas? str
+## productos
+_id oid
+sku str
+nombre str
+descripcion str
+marca str
+categoria str
+subcategoria str
+precio decimal
+precio_oferta? decimal|null
+iva double
+stock int
+stock_por_almacen[] obj
+stock_por_almacen[].almacen_id str
+stock_por_almacen[].unidades int
+dimensiones obj
+dimensiones.alto_cm double
+dimensiones.ancho_cm double
+dimensiones.fondo_cm double
+dimensiones.peso_kg double
+atributos obj
+atributos.color? str
+atributos.talla? str
+atributos.material? str
+etiquetas[] str
+valoracion_media double
+activo bool
+creado date
+actualizado date
+## reviews
+_id oid
+productId oid
+userId oid
+rating int
+title str
+body str
+language str
+verifiedPurchase bool
+helpfulVotes int
+createdAt date
+moderation obj
+moderation.status str
+moderation.reason? str
+photos[] obj
+photos[].url str
+photos[].width int
+photos[].height int<|im_end|>
+<|im_start|>user
+¿Qué transportista tiene más envíos con incidencia en Málaga en los últimos 30 días?<|im_end|>
+<|im_start|>assistant
+<think>
+
+</think>
+
